@@ -1,22 +1,21 @@
 import re
 
-import mechanize
-
 from lxml import etree
+
+from page_loader import PageLoader
 
 class BaseScraper:
 	def __init__(self, id):
 		self.id = id
+		self.page_loader = PageLoader()
 	
 	def results(self):
-		br = mechanize.Browser()
 		has_more_items = True
 		start = 0
 		result = []
 		
 		while(has_more_items):
-			response = br.open(self.url(start))
-			page_content = response.read()
+			page_content = self.load_page(start)
 			page_dom = etree.HTML(page_content)
 			links = page_dom.xpath(self.data_link())
 			data_urls = map(lambda link: link.get("href"), links)
@@ -30,3 +29,9 @@ class BaseScraper:
 			start += self.page_size()
 				
 		return result
+		
+	def load_page(self, start):
+		return self.page_loader.load(self.url(start))
+		
+	def set_page_loader(self, page_loader):
+		self.page_loader = page_loader
