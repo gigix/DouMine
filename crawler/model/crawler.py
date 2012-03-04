@@ -11,8 +11,9 @@ class Crawler:
 		
 	def run(self):
 		while(self.limit > 0 and not self.scrapers_queue.empty()):
-			self.limit -= 1
 			scraper = self.scrapers_queue.get()
+			if(scraper.need_scrape()):
+				self.limit -= 1
 			scraper.persistent()
 			for new_scraper in scraper.spawn():
 				self.scrapers_queue.put(new_scraper)
