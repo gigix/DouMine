@@ -11,6 +11,9 @@ class BaseScraper:
 		self.basedir = basedir
 		self.page_loader = PageLoader()
 		self.load_existing_data()
+
+	def need_scrape(self):
+		return self._results == None
 	
 	def load_existing_data(self):
 		if(not os.access(self.csv_file_path(), os.F_OK)):
@@ -37,7 +40,7 @@ class BaseScraper:
 		return map(self._spawn, self.results())
 			
 	def results(self):
-		if(self._results == None):
+		if(self.need_scrape()):
 			self._results = self._actual_fetch_results()
 		return self._results
 			

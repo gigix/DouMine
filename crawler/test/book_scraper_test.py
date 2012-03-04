@@ -35,8 +35,7 @@ class TestBookScraper:
 
 	def test_load_scraped_data_when_initiation(self):
 		# Given
-		os.makedirs(self.basedir)
-		shutil.copyfile(os.path.dirname(__file__) + "/fixture/book.1766670.csv", self.basedir + "/book.1766670.csv")
+		self.copy_fixture_file("book.1766670.csv")
 		
 		# When
 		scraper = BookScraper(1766670, self.basedir)
@@ -44,7 +43,12 @@ class TestBookScraper:
 		# Then
 		assert len(scraper._results) == 32
 		assert scraper._results[0] == "53516791"
-
+		
+	def copy_fixture_file(self, filename):
+		if(not os.access(self.basedir, os.F_OK)):
+			os.makedirs(self.basedir)
+		shutil.copyfile(os.path.dirname(__file__) + "/fixture/" + filename, self.basedir + "/" + filename)
+		
 	def clean_temp_directory(self):
 		shutil.rmtree(self.basedir, True) 
 	
