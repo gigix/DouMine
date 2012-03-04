@@ -3,7 +3,7 @@ from Queue import Queue
 from scrapers import BookScraper, ReaderScraper
 
 class Crawler:
-	def __init__(self, book_id, basedir="data", limit=1000):
+	def __init__(self, book_id, limit=1000, basedir="data"):
 		self.limit = limit
 		self.basedir = basedir
 		self.scrapers_queue = Queue()
