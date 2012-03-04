@@ -14,6 +14,24 @@ def test_scrape_reader_ids_of_given_book():
 	assert len(reader_ids) == 40
 	assert reader_ids[0] == "53516791"
 	
+def test_persistent_reader_ids_of_given_book():
+	# Given
+	basedir = "/tmp/books"
+	scraper = BookScraper(1766670)
+	scraper.set_page_loader(StubBookPageLoader())
+	clean_temp_directory(basedir)
+
+	# When
+	scraper.persistent(basedir)
+	
+	# Then
+	assert len(os.listdir(basedir)) == 1
+
+def clean_temp_directory(basedir):
+	try: 
+		os.removedirs(basedir) 
+	except: 
+		pass
 	
 class StubBookPageLoader:
 	def load(self, url):

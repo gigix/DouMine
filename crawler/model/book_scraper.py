@@ -1,6 +1,9 @@
 from base_scraper import BaseScraper
 
 class BookScraper(BaseScraper):
+	def scraper_name(self):
+		return "book"
+		
 	def readers(self):
 		return self.results()
 		

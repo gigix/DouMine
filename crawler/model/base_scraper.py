@@ -1,4 +1,5 @@
 import re
+import os
 
 from lxml import etree
 
@@ -9,6 +10,15 @@ class BaseScraper:
 		self.id = id
 		self.page_loader = PageLoader()
 	
+	def persistent(self, basedir):
+		if(not os.access(basedir, os.F_OK)):
+			os.makedirs(basedir)
+		csv_file = open(basedir + "/" + self.scraper_name() + "." + str(self.id) + ".csv", "w")
+		csv_file.write("ID\n")
+		for result in self.results():
+			csv_file.write(result + "\n")
+		csv_file.close()
+			
 	def results(self):
 		has_more_items = True
 		start = 0
