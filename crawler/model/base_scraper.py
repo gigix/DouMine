@@ -6,15 +6,28 @@ from lxml import etree
 from page_loader import PageLoader
 
 class BaseScraper:
-	def __init__(self, id):
+	def __init__(self, id, basedir):
 		self.id = id
+		self.basedir = basedir
 		self.page_loader = PageLoader()
-		self._results = None
+		self.load_existing_data()
 	
-	def persistent(self, basedir):
-		if(not os.access(basedir, os.F_OK)):
-			os.makedirs(basedir)
-		csv_file = open(basedir + "/" + self._scraper_name() + "." + str(self.id) + ".csv", "w")
+	def load_existing_data(self):
+		if(not os.access(self.csv_file_path(), os.F_OK)):
+			self._results = None
+		else:
+			csv_file = open(self.csv_file_path())
+			csv_content = csv_file.read()
+			csv_file.close()
+			self._results = csv_content.strip().split("\n")[1:]
+	
+	def csv_file_path(self):
+		return self.basedir + "/" + self._scraper_name() + "." + str(self.id) + ".csv"
+	
+	def persistent(self):
+		if(not os.access(self.basedir, os.F_OK)):
+			os.makedirs(self.basedir)
+		csv_file = open(self.csv_file_path(), "w")
 		csv_file.write("ID\n")
 		for result in self.results():
 			csv_file.write(result + "\n")

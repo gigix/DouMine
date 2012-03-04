@@ -7,13 +7,13 @@ class Crawler:
 		self.limit = limit
 		self.basedir = basedir
 		self.scrapers_queue = Queue()
-		self.scrapers_queue.put(BookScraper(book_id))
+		self.scrapers_queue.put(BookScraper(book_id, self.basedir))
 		
 	def run(self):
 		while(self.limit > 0 and not self.scrapers_queue.empty()):
 			self.limit -= 1
 			scraper = self.scrapers_queue.get()
-			scraper.persistent(self.basedir)
+			scraper.persistent()
 			for new_scraper in scraper.spawn():
 				self.scrapers_queue.put(new_scraper)
 			print "Scraped item " + scraper.id + ", " + str(self.limit) + " items to go."

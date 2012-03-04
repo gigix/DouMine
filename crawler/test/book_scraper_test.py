@@ -1,10 +1,13 @@
 import os
+import shutil
 
 from ..model.scrapers import BookScraper	
 
 class TestBookScraper:
 	def setUp(self):
-		self.scraper = BookScraper(1766670)
+		self.basedir = "/tmp/books"
+		self.clean_temp_directory()
+		self.scraper = BookScraper(1766670, self.basedir)
 		self.scraper.set_page_loader(StubBookPageLoader())
 	
 	def test_scrape_reader_ids_of_given_book(self):
@@ -16,15 +19,11 @@ class TestBookScraper:
 		assert reader_ids[0] == "53516791"
 	
 	def test_persistent_reader_ids_of_given_book(self):
-		# Given
-		basedir = "/tmp/books"
-		self.clean_temp_directory(basedir)
-
 		# When
-		self.scraper.persistent(basedir)
+		self.scraper.persistent()
 	
 		# Then
-		assert len(os.listdir(basedir)) == 1
+		assert len(os.listdir(self.basedir)) == 1
 
 	def test_spawn_book_scrapers(self):
 		# When
@@ -34,11 +33,20 @@ class TestBookScraper:
 		assert len(reader_scrapers) == 40
 		assert reader_scrapers[0].id == '53516791'
 
-	def clean_temp_directory(self, basedir):
-		try: 
-			os.removedirs(basedir) 
-		except: 
-			pass
+	def test_load_scraped_data_when_initiation(self):
+		# Given
+		os.makedirs(self.basedir)
+		shutil.copyfile(os.path.dirname(__file__) + "/fixture/book.1766670.csv", self.basedir + "/book.1766670.csv")
+		
+		# When
+		scraper = BookScraper(1766670, self.basedir)
+		
+		# Then
+		assert len(scraper._results) == 32
+		assert scraper._results[0] == "53516791"
+
+	def clean_temp_directory(self):
+		shutil.rmtree(self.basedir, True) 
 	
 class StubBookPageLoader:
 	def load(self, url):

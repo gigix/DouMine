@@ -1,10 +1,13 @@
 import os
+import shutil
 
 from ..model.scrapers import ReaderScraper
 
 class TestReaderScraper:
 	def setUp(self):
-		self.scraper = ReaderScraper(41904640)
+		self.basedir = "/tmp/readers"
+		self.clean_temp_directory()
+		self.scraper = ReaderScraper(41904640, self.basedir)
 		self.scraper.set_page_loader(StubReaderPageLoader())		
 	
 	def test_scrape_book_ids_of_given_reader(self):
@@ -16,16 +19,12 @@ class TestReaderScraper:
 		assert book_ids[0] == '4199761'
 	
 	def test_persistent_book_ids_of_given_book(self):
-		# Given
-		basedir = "/tmp/readers"
-		self.clean_temp_directory(basedir)
-
 		# When
-		self.scraper.persistent(basedir)
+		self.scraper.persistent()
 
 		# Then
-		assert len(os.listdir(basedir)) == 1
-		assert open(basedir + "/" + "reader.41904640.csv").read().split("\n")[1] == '4199761'
+		assert len(os.listdir(self.basedir)) == 1
+		assert open(self.basedir + "/" + "reader.41904640.csv").read().split("\n")[1] == '4199761'
 	
 	def test_spawn_book_scrapers(self):
 		# When
@@ -35,11 +34,8 @@ class TestReaderScraper:
 		assert len(book_scrapers) == 30
 		assert book_scrapers[0].id == '4199761'
 
-	def clean_temp_directory(self, basedir):
-		try: 
-			os.removedirs(basedir) 
-		except: 
-			pass
+	def clean_temp_directory(self):
+		shutil.rmtree(self.basedir, True) 
 
 
 class StubReaderPageLoader:

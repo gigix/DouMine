@@ -8,7 +8,7 @@ class ReaderScraper(BaseScraper):
 		return "reader"
 		
 	def _spawn(self, book_id):
-		return BookScraper(book_id)
+		return BookScraper(book_id, self.basedir)
 	
 	def _url(self, start):
 		return "http://book.douban.com/people/" + str(self.id) + "/collect?start=" + str(start)
@@ -27,7 +27,7 @@ class BookScraper(BaseScraper):
 		return "book"
 
 	def _spawn(self, reader_id):
-		return ReaderScraper(reader_id)
+		return ReaderScraper(reader_id, self.basedir)
 
 	def _url(self, start):
 		return "http://book.douban.com/subject/" + str(self.id) + "/collections?start=" + str(start)
