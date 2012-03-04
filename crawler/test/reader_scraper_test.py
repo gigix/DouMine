@@ -1,38 +1,45 @@
 import os
 
-from ..model.reader_scraper import ReaderScraper
+from ..model.scrapers import ReaderScraper
 
-def test_scrape_book_ids_of_given_reader():
-	# Given
-	scraper = ReaderScraper(41904640)
-	scraper.set_page_loader(StubReaderPageLoader())
+class TestReaderScraper:
+	def setUp(self):
+		self.scraper = ReaderScraper(41904640)
+		self.scraper.set_page_loader(StubReaderPageLoader())		
 	
-	# When
-	book_ids = scraper.books()
+	def test_scrape_book_ids_of_given_reader(self):
+		# When
+		book_ids = self.scraper.books()
 	
-	# Then
-	assert len(book_ids) == 30
-	assert book_ids[0] == '4199761'
+		# Then
+		assert len(book_ids) == 30
+		assert book_ids[0] == '4199761'
 	
-def test_persistent_book_ids_of_given_book():
-	# Given
-	basedir = "/tmp/readers"
-	scraper = ReaderScraper(41904640)
-	scraper.set_page_loader(StubReaderPageLoader())
-	clean_temp_directory(basedir)
+	def test_persistent_book_ids_of_given_book(self):
+		# Given
+		basedir = "/tmp/readers"
+		self.clean_temp_directory(basedir)
 
-	# When
-	scraper.persistent(basedir)
+		# When
+		self.scraper.persistent(basedir)
 
-	# Then
-	assert len(os.listdir(basedir)) == 1
-	assert open(basedir + "/" + "reader.41904640.csv").read().split("\n")[1] == '4199761'
+		# Then
+		assert len(os.listdir(basedir)) == 1
+		assert open(basedir + "/" + "reader.41904640.csv").read().split("\n")[1] == '4199761'
+	
+	def test_spawn_book_scrapers(self):
+		# When
+		book_scrapers = self.scraper.spawn()
+		
+		# Then
+		assert len(book_scrapers) == 30
+		assert book_scrapers[0].id == '4199761'
 
-def clean_temp_directory(basedir):
-	try: 
-		os.removedirs(basedir) 
-	except: 
-		pass
+	def clean_temp_directory(self, basedir):
+		try: 
+			os.removedirs(basedir) 
+		except: 
+			pass
 
 
 class StubReaderPageLoader:

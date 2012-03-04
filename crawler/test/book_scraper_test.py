@@ -1,37 +1,44 @@
 import os
 
-from ..model.book_scraper import BookScraper	
+from ..model.scrapers import BookScraper	
 
-def test_scrape_reader_ids_of_given_book():
-	# Given
-	scraper = BookScraper(1766670)
-	scraper.set_page_loader(StubBookPageLoader())
+class TestBookScraper:
+	def setUp(self):
+		self.scraper = BookScraper(1766670)
+		self.scraper.set_page_loader(StubBookPageLoader())
 	
-	# When
-	reader_ids = scraper.readers()
+	def test_scrape_reader_ids_of_given_book(self):
+		# When
+		reader_ids = self.scraper.readers()
 	
-	# Then
-	assert len(reader_ids) == 40
-	assert reader_ids[0] == "53516791"
+		# Then
+		assert len(reader_ids) == 40
+		assert reader_ids[0] == "53516791"
 	
-def test_persistent_reader_ids_of_given_book():
-	# Given
-	basedir = "/tmp/books"
-	scraper = BookScraper(1766670)
-	scraper.set_page_loader(StubBookPageLoader())
-	clean_temp_directory(basedir)
+	def test_persistent_reader_ids_of_given_book(self):
+		# Given
+		basedir = "/tmp/books"
+		self.clean_temp_directory(basedir)
 
-	# When
-	scraper.persistent(basedir)
+		# When
+		self.scraper.persistent(basedir)
 	
-	# Then
-	assert len(os.listdir(basedir)) == 1
+		# Then
+		assert len(os.listdir(basedir)) == 1
 
-def clean_temp_directory(basedir):
-	try: 
-		os.removedirs(basedir) 
-	except: 
-		pass
+	def test_spawn_book_scrapers(self):
+		# When
+		reader_scrapers = self.scraper.spawn()
+
+		# Then
+		assert len(reader_scrapers) == 40
+		assert reader_scrapers[0].id == '53516791'
+
+	def clean_temp_directory(self, basedir):
+		try: 
+			os.removedirs(basedir) 
+		except: 
+			pass
 	
 class StubBookPageLoader:
 	def load(self, url):
