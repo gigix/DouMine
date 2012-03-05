@@ -1,3 +1,5 @@
+import time
+
 from Queue import Queue
 
 from scrapers import BookScraper, ReaderScraper
@@ -17,4 +19,4 @@ class Crawler:
 			scraper.persistent()
 			for new_scraper in scraper.spawn():
 				self.scrapers_queue.put(new_scraper)
-			print "Scraped item " + scraper.id + ", " + str(self.limit) + " items to go."
+			print "[" + time.asctime() + "] Scraped item " + scraper.id + ", " + str(self.limit) + " items to go."
