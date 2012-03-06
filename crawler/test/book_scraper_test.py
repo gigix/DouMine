@@ -31,7 +31,6 @@ class TestBookScraper:
 
 		# Then
 		assert len(reader_scrapers) == 40
-		assert reader_scrapers[0].id == '53516791'
 
 	def test_load_scraped_data_when_initiation(self):
 		# Given

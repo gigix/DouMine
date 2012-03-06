@@ -32,7 +32,6 @@ class TestReaderScraper:
 		
 		# Then
 		assert len(book_scrapers) == 30
-		assert book_scrapers[0].id == '4199761'
 
 	def clean_temp_directory(self):
 		shutil.rmtree(self.basedir, True) 

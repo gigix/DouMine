@@ -1,5 +1,6 @@
 import re
 import os
+import random
 
 from lxml import etree
 
@@ -37,7 +38,9 @@ class BaseScraper:
 		csv_file.close()
 		
 	def spawn(self):
-		return map(self._spawn, self.results())
+		results = map(self._spawn, self.results())
+		random.shuffle(results)
+		return results
 			
 	def results(self):
 		if(self.need_scrape()):
