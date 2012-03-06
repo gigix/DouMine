@@ -1,3 +1,5 @@
+from urllib2 import HTTPError
+
 import mechanize
 import cookielib
 
@@ -21,5 +23,10 @@ browser.addheaders = [
 
 class PageLoader:	
 	def load(self, url):		
-		response = browser.open(url)
-		return response.read()
+		try:
+			response = browser.open(url)
+			return response.read()
+		except HTTPError as e:
+			if(int(e.code) == 404):
+				return None
+			raise e

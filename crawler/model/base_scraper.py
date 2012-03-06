@@ -51,6 +51,10 @@ class BaseScraper:
 		
 		while(has_more_items):
 			page_content = self.load_page(start)
+			# Ignore item if 404 error happens
+			if(page_content == None):
+				break
+			
 			page_dom = etree.HTML(page_content)
 			links = page_dom.xpath(self._data_link())
 			data_urls = map(lambda link: link.get("href"), links)
