@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+while : ; do
+	crawler/run.py
+done

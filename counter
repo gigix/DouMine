@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+ls -l data/ | grep -c "book.*.csv"
+ls -l data/ | grep -c "reader.*.csv"
+

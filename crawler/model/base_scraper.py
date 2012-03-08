@@ -31,9 +31,11 @@ class BaseScraper:
 	def persistent(self):
 		if(not os.access(self.basedir, os.F_OK)):
 			os.makedirs(self.basedir)
+		all_results = self.results()
+		
 		csv_file = open(self.csv_file_path(), "w")
 		csv_file.write("ID\n")
-		for result in self.results():
+		for result in all_results:
 			csv_file.write(result + "\n")
 		csv_file.close()
 		
