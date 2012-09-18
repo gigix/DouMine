@@ -4,13 +4,16 @@ import random
 
 from lxml import etree
 
-from page_loader import PageLoader
+from mechanize_page_loader import MechanizePageLoader
+from selenium_page_loader import SeleniumPageLoader
 
 class BaseScraper:
+	page_loader = SeleniumPageLoader()
+	# page_loader = MechanizePageLoader()
+	
 	def __init__(self, id, basedir):
 		self.id = id
 		self.basedir = basedir
-		self.page_loader = PageLoader()
 		self.load_existing_data()
 
 	def need_scrape(self):
@@ -75,7 +78,7 @@ class BaseScraper:
 		return result
 		
 	def load_page(self, start):
-		return self.page_loader.load(self._url(start))
+		return BaseScraper.page_loader.load(self._url(start))
 		
-	def set_page_loader(self, page_loader):
-		self.page_loader = page_loader
+	# def set_page_loader(self, page_loader):
+	# 	self.page_loader = page_loader

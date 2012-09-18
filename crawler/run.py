@@ -3,4 +3,4 @@ import os
 
 from model.crawler import Crawler
 
-Crawler('1229923', 7, os.path.dirname(__file__) + "/../data").run()
+Crawler('4262627', 10, os.path.dirname(__file__) + "/../data").run()

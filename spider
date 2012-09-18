@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 while : ; do
-	crawler/run.py
+	crawler/run.py && \
+	date && ls -l data/ | grep -c reader
 done

@@ -21,7 +21,7 @@ browser.addheaders = [
 	('Accept-Charset', 'ISO-8859-1,utf-8;q=0.7,*;q-0.3')
 ]
 
-class PageLoader:	
+class MechanizePageLoader:	
 	def load(self, url):		
 		try:
 			response = browser.open(url)
