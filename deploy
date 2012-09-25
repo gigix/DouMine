@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+ssh doumine@thoughtworkers.org "rm -rf ~/doumine.thoughtworkers.org/public" && \
+scp -r ./public doumine@thoughtworkers.org:~/doumine.thoughtworkers.org/public
