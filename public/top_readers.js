@@ -1,4 +1,4 @@
-var r = 960,
+var r = 1024,
     format = d3.format(",d"),
     fill = d3.scale.category20c();
 
@@ -8,7 +8,7 @@ var bubble = d3.layout.pack()
     .padding(1.5);
 
 var vis = d3.select("#chart").append("svg")
-    .attr("width", r)
+    .attr("width", r * 1.5)
     .attr("height", r)
     .attr("class", "bubble");
 
@@ -27,10 +27,12 @@ d3.json("data/top_readers.json", function(json) {
       .attr("r", function(d) { return d.r; })
       .style("fill", function(d) { return fill(d.packageName); });
 
-  node.append("text")
-      .attr("text-anchor", "middle")
-      .attr("dy", ".3em")
-      .text(function(d) { return d.className.substring(0, d.r / 3); });
+  node.append('a').attr('xlink:href', function(d){ return 'http://www.douban.com/people/' + d.className;}).attr('target', '_blank')
+	.append("text").attr("text-anchor", "middle").attr("dy", ".3em")
+    .text(function(d) { 
+		var txt = d.className.substring(0, d.r / 3); 
+		return txt;
+	});
 });
 
 // Returns a flattened hierarchy containing all leaf nodes under the root.
