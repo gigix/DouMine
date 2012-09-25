@@ -1,0 +1,11 @@
+#!/bin/bash
+cd `dirname $0`/public
+
+# use default port if called without args
+PORT=2600 
+if [[ $1 =~ ^[0-9]+$ ]]
+  then PORT=$1
+fi
+
+echo "Starting local http server (ctrl-c to exit)"
+python -m SimpleHTTPServer $PORT
