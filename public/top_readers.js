@@ -25,7 +25,11 @@ d3.json("data/top_readers.json", function(json) {
 
   node.append("circle")
       .attr("r", function(d) { return d.r; })
-      .style("fill", function(d) { return fill(d.packageName); });
+      .style("fill", function(d) { 
+		var grayScale = 20 - d.value;
+		var grayValue = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'][grayScale]
+		return '#ee' + grayValue + grayValue + grayValue + grayValue;
+	  });
 
   node.append('a').attr('xlink:href', function(d){ return 'http://www.douban.com/people/' + d.className;}).attr('target', '_blank')
 	.append("text").attr("text-anchor", "middle").attr("dy", ".3em")
