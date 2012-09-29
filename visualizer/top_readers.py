@@ -14,5 +14,5 @@ with open(base_dir + '/output/part-r-00000', 'rb') as csvfile:
 
 json += ']}'
 
-with open(base_dir + '/public/data/top_readers.json', 'wb') as jsonfile:
+with open(base_dir + '/public/data/top_sf_readers.json', 'wb') as jsonfile:
 	jsonfile.write(json)

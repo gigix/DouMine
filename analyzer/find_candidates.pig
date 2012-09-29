@@ -15,7 +15,7 @@ book_reading_counts_ordered = LIMIT (ORDER book_reading_counts BY readings DESC)
 DUMP book_reading_counts_ordered;
 */
 
-good_books = LOAD 'good_books.csv' USING PigStorage(',') AS (book_id:int, book_title:chararray);
+good_books = LOAD 'good_sf_books.csv' USING PigStorage(',') AS (book_id:int, book_title:chararray);
 good_book_readings = JOIN readers BY book_id, good_books BY book_id;
 good_book_reading_grouped = GROUP good_book_readings BY reader_id;
 good_book_reading_counts = FOREACH good_book_reading_grouped GENERATE group, COUNT(good_book_readings) AS read_good_books;
