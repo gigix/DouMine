@@ -14,7 +14,7 @@
 		});
 	  	d3.layout.cloud().size([w, h])
 	      .words(topReaders)
-	      .rotate(function() { return ~~(Math.random() * 2) * 27; })
+	      .rotate(function() { return ~~(Math.random() * 2) * 90; })
 	      .fontSize(function(d) { return d.size; })
 	      .on("end", draw)
 	      .start();
@@ -34,36 +34,35 @@
 
 		var vis = svg.append("g").attr("transform", "translate(" + [w >> 1, h >> 1] + ")");
 
-	  var text = vis.selectAll("text")
-	      .data(words, function(d) { return d.text.toLowerCase(); });
+	  var text = vis.selectAll("text").data(words, function(d) { return d.text.toLowerCase(); });
+	
 	  text.transition()
 	      .duration(1000)
 	      .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
-	      .style("font-size", function(d) { return d.size + "px"; });
-	  text.enter().append("text")
+	      .style("font-size", function(d) { return d.size + "px"; })
+	  text.enter()
+		  // .append('a')
+		  // .attr('xlink:href', function(d){ return 'http://www.douban.com/people/' + d.text;}).attr('target', '_blank')
+		  .append("text")
 	      .attr("text-anchor", "middle")
+		  .attr("cursor", "pointer")
 	      .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
 	      .style("font-size", function(d) { return d.size + "px"; })
 	      .on("click", function(d) {
-	        load(d.text);
+	        window.open('http://www.douban.com/people/' + d.text)
 	      })
 	      .style("opacity", 1e-6)
 	    .transition()
 	      .duration(1000)
 	      .style("opacity", 1);
 	  text.style("font-family", function(d) { return d.font; })
-	      // .style("fill", function(d) { return fill(d.text.toLowerCase()); })
+		  .style("fill", function(d) { 
+			document.inspect = d;
+			var grayScale = 20 - d.size / 5;
+			var grayValue = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'][grayScale]
+			return '#bb' + grayValue + grayValue + grayValue + grayValue;
+	  	  })
 	      .text(function(d) { return d.text; });
-	  // var exitGroup = background.append("g")
-	  //     .attr("transform", vis.attr("transform"));
-	  // var exitGroupNode = exitGroup.node();
-	  // text.exit().each(function() {
-	  //   exitGroupNode.appendChild(this);
-	  // });
-	  // exitGroup.transition()
-	  //     .duration(1000)
-	  //     .style("opacity", 1e-6)
-	  //     .remove();
 	  vis.transition()
 	      .delay(1000)
 	      .duration(750)
