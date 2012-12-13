@@ -1,0 +1,37 @@
+body {
+	background: url('../images/paper.jpg');
+	font-family: "Titillium Web", sans-serif;
+	color: #412C16;
+	width: 1200px;
+}
+
+svg {
+	float: left;
+	margin-top: 10px;
+}
+
+.books {
+	float: left;
+	width: 230px;
+	margin: 10px 0 0 5px;
+	font-size: 15px;
+}
+
+.books p {
+	margin: 0;
+	font-size: 17px;
+}
+
+.books ul {
+	list-style: none;
+}
+
+.books a {
+	text-decoration: none;
+	color: #60401F;
+}
+
+.books a:hover {
+	color:#005580;
+	text-decoration:underline;
+}

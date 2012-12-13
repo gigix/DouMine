@@ -1,3 +1,17 @@
+function drawBookList(csvPath) {
+	$.ajax({
+		url: csvPath,
+		success: function(data) {
+			var container = $('.book-list')
+			$($.csv.toArrays(data)).each(function(index, row) {
+				if(row[1] != undefined) {
+					container.append("<li><a href='http://book.douban.com/subject/" + row[0] + "' target='_blank'>" + row[1] + "</a></li>")
+				}
+			})
+		}
+	});
+}
+
 var w = 960,
 	h = 600;
 

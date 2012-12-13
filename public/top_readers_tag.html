@@ -1,13 +1,24 @@
 <html>
 <head>
+	<link href="http://fonts.googleapis.com/css?family=Titillium+Web:400,700" media="screen" rel="stylesheet" type="text/css">	
+	<link href="stylesheets/doumine.css" rel="stylesheet" type="text/css">
+	<title>DouMine | Programmers</title>
+	<script src='javascripts/jquery-1.8.3.min.js'></script>
+	<script src='javascripts/jquery.csv-0.71.js'></script>
 	<script src="javascripts/d3.v2.js"></script>
 	<script src="javascripts/d3.layout.cloud.js"></script>
 	<script src="top_readers_tag.js"></script>
-	<title>DouMine | Programmers</title>
+	<script>
+		$(document).ready(function() {
+			drawBookList("data/good_books.csv")
+			drawTagCloud("data/top_readers.json")
+		});
+	</script>
 </head>
 <body>
-<script>
-	drawTagCloud("data/top_readers.json")
-</script>
+	<div class='books'>
+		<p class='title'>People read these books ...</p>
+		<ul class='book-list'></ul>
+	</div>
 </body>
 </html>
